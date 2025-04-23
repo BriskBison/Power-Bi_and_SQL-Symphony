@@ -47,7 +47,7 @@ Next, let's check which bikes had the most orders. These are the EnduranceElite 
 The second query returns the number of subcategories that are in the 'Road Bikes' category, into which the bikes are divided. We can see that there are 12 of them, which can be useful in future analyses.
 
   [Table of Contents](#table-of-contents)
-## **Chapter 2** 
+## **2. Chapter 2** 
 
 ![Dash2](https://github.com/user-attachments/assets/b834fa39-2891-4c88-9a09-648153a2982b)
 
@@ -74,7 +74,7 @@ The query will work correctly, returning the total orders, average product price
 The second result is TOP 5, The query will return 5 rows (largest orders), sorted by Order_Total, and additionally RANK() will assign rankings within each product color, starting from 1 for the highest value.
 
  [Table of Contents](#table-of-contents)
-## **Chapter 3** 
+## **3. Chapter 3** 
 
 ![Dash3](https://github.com/user-attachments/assets/e810e9b7-1224-4e8f-b272-adb4099f6de9)
 
@@ -105,7 +105,7 @@ I use the "CREATE TABLE" command to create the table and insert into to add the 
 		(N'Orange', N'AeroSpeed 1000'),
 		(N'Purple', N'DownhillDominator 7000'),
 		(N'Black', N'DownhillDominator 5000'),
-  (N'Blue', N'E-TrailBlazer 1000');![image](https://github.com/user-attachments/assets/8d6cdc4e-c3b8-4009-95b6-84a04cb7a7a6)
+		(N'Blue', N'E-TrailBlazer 1000');
 
 Then, using LEFT JOIN, we can try to join records from the Main table and match them with values ​​from the Best_Bikes table using the product_name column. Then, using WHERE, we filter the result and leave only those rows for which product_name also exists in Best_Bikes.
 
