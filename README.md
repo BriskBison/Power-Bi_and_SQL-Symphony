@@ -88,12 +88,6 @@ The second result is TOP 5, The query will return 5 rows (largest orders), sorte
 
 5. The last function I would like to show in this chapter is the meter - a very useful tool if we want to have insight into a given value in relation to the whole, e.g. when we want to check the stock level, which is indicated by the indicator I used.
 
-![SQL3](https://github.com/user-attachments/assets/7e01d352-059a-4ec9-940b-c8db2474cfcf)
-
-Now we can create an additional table with the 5 bikes that generated the highest combined profit, we discovered them in the previous activity.
-
-I use the "CREATE TABLE" command to create the table and insert into to add the values. We add "N" before the words to ensure Unicode encoding. In this case I decided not to add ID because we will be connecting the table by bike name and their ID numbers would be different from those in the main table.
-
 		CREATE TABLE Best_Bikes (
 		    product_color NCHAR(50),
 		    product_name NCHAR(100)
@@ -107,9 +101,16 @@ I use the "CREATE TABLE" command to create the table and insert into to add the 
 		(N'Black', N'DownhillDominator 5000'),
 		(N'Blue', N'E-TrailBlazer 1000');
 
+
+Now we can create an additional table with the 5 bikes that generated the highest combined profit, we discovered them in the previous queries.
+
+I use the "CREATE TABLE" command to create the table and "INSERT INTO" to add the values. I add "N" before the words to ensure Unicode encoding. In this case I decided not to add ID because we will be connecting the table by bike name and their ID numbers would be different from those in the main table.
+
+![SQL3](https://github.com/user-attachments/assets/7e01d352-059a-4ec9-940b-c8db2474cfcf)
+
 Then, using LEFT JOIN, we can try to join records from the Main table and match them with values ​​from the Best_Bikes table using the product_name column. Then, using WHERE, we filter the result and leave only those rows for which product_name also exists in Best_Bikes.
 
-The next query performs the same function, but returns all product names, and in the column next to it, using the occurrence of the NULL value, determines whether a given product is in both tables. COALESCE is used to return the first value that is not = NULL. The CASE function used after ORDER BY is intended to assign the value 1,2 or 3 to each scenario so that the table can be arranged in a specific hierarchy. By default, SQL queries are assigned in ASC order (from smallest to largest), so values ​​1 = "yes" answers appear at the top and increase.
+The next query performs the same function, but returns all product names and in the column next to it, using the occurrence of the NULL value, determines whether a given product is in both tables. COALESCE is used to return the first value that is not = NULL. The CASE function used after ORDER BY is intended to assign the value 1,2 or 3 to each scenario so that the table can be arranged in a specific hierarchy. By default, SQL queries are assigned in ASC order (from smallest to largest), so values ​​1 = "yes" answers appear at the top and increase.
 
 [Table of Contents](#table-of-contents)
   
