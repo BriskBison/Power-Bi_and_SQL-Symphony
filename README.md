@@ -1,5 +1,3 @@
-I AM STILL WORKING ON THIS PROJECT, IT IS NOT FULLY FINISHED YET :)
-
 Hello,
 
 in this work I present several dashboards in the Power Bi program and queries in the MS SQL Server program.
@@ -12,6 +10,7 @@ Below is a short table of contents with links to each chapter, and then there is
 
 1. Chapter 1 - Dashboard, SQL (ALTER TABLE, SUM, COUNT, SUBQUERY, GROUP BY, HAVING)
 2. Chapter 2 - Dashboard, SQL (FORMAT, ROUND, AVG, OVER, RANK, PARTITION BY, WHERE)
+3. Chapter 3 - Dashboard (Decomposition tree, key influencers, Q&A, gauge), SQL (LEFT JOIN, OUTER JOIN, COALESCE, NOT NULL, CASE, WHEN)
 
 ---
 
@@ -19,9 +18,10 @@ Below is a short table of contents with links to each chapter, and then there is
 - [Table of Contents](#table-of-contents)
 - [1. Chapter 1](#1-chapter-1)
 - [2. Chapter 2](#2-chapter-2)
+- [3. Chapter 3](#3-chapter-3)
 
 
-## **2. Chapter 1**
+## **Chapter 1**
 
 In each dashboard, I will describe what actions I have taken. The Power Bi program can be downloaded from the Microsoft website. Always check if the download is from a secure source
 
@@ -44,16 +44,16 @@ First, we need to modify the columns in our table because the date format is inc
 
 Next, let's check which bikes had the most orders. These are the EnduranceElite 9000 and the FreestyleMaster 9000.
 
-The second query returns the number of subcategories that are in the 'Road Bikes' category, into which the bikes are divided. We can see that there are 12 of them, which will be useful in future analyses.
+The second query returns the number of subcategories that are in the 'Road Bikes' category, into which the bikes are divided. We can see that there are 12 of them, which can be useful in future analyses.
 
   [Table of Contents](#table-of-contents)
-## **2. Chapter 2** 
+## **Chapter 2** 
 
 ![Dash2](https://github.com/user-attachments/assets/b834fa39-2891-4c88-9a09-648153a2982b)
 
-1. We place the KPI of the total orders and the total products in stock at the top, so that we have a good overview of the data during the entire analysis. The first is the total orders over the dates, the second is the product stock.
+1. I place the KPI of the total orders and the total products in stock at the top, so that we have a good overview of the data during the entire analysis. The first is the total orders over the dates, the second is the product stock.
 
-2. We create a pie chart to determine which bike categories contributed to the total sales. "Mountain Bikes" and "Road Bikes" stand out significantly, the smallest value is for "Kids Bikes".
+2. I create a pie chart to determine which bike categories contributed to the total sales. "Mountain Bikes" and "Road Bikes" stand out significantly, the smallest value is for "Kids Bikes".
 
 3. In the pie chart settings, in the general - label tab, we set "Label contents = Percentage of category".
 
@@ -72,4 +72,47 @@ The second query returns the number of subcategories that are in the 'Road Bikes
 The query will work correctly, returning the total orders, average product price and product color only for the regions "Europe" and "Asia" where the average product price is greater than 1700.
 
 The second result is TOP 5, The query will return 5 rows (largest orders), sorted by Order_Total, and additionally RANK() will assign rankings within each product color, starting from 1 for the highest value.
+
+ [Table of Contents](#table-of-contents)
+## **Chapter 3** 
+
+![Dash3](https://github.com/user-attachments/assets/e810e9b7-1224-4e8f-b272-adb4099f6de9)
+
+1. By creating a decomposition tree, we can get to detailed data on a given value in a very clear way, while seeing the relationships between individual groups. In this example, I choose Order Total -> Payment Method -> Product Color -> Product Price -> Product Name = Which finally returns information about what bike, for what total value, in black color was sold via PayPal
+
+2. A very useful function is simple filtering, which can be found on the left side of the "Visualizations" tab. Just choose what values ​​we want to filter the results by, and the program will be able to extract them. I decided on the Order Status and Product Color filter, I placed the table with filters in the middle at the bottom of the dashboard.
+
+3. Another useful tool is the Q&A function, which suggests questions and returns quick answers, this is especially useful for people who do not know the Power Bi program or detailed data analysis methods and only need quick answers.
+
+4. Key influencers - this is a very useful method that can quickly suggest the cause of the problem. When we choose what value we want to analyze and based on what variable we intend to do it, the program will generate a mini chart with the indicated average and suggested correlation. In this example I tried to investigate whether there is a relationship between canceled orders and the bike model, as we can see orders for bikes from the BMX category were often canceled, which should draw the company's attention.
+
+5. The last function I would like to show in this chapter is the meter - a very useful tool if we want to have insight into a given value in relation to the whole, e.g. when we want to check the stock level, which is indicated by the indicator I used.
+
+![SQL3](https://github.com/user-attachments/assets/7e01d352-059a-4ec9-940b-c8db2474cfcf)
+
+Now we can create an additional table with the 5 bikes that generated the highest combined profit, we discovered them in the previous activity.
+
+I use the "CREATE TABLE" command to create the table and insert into to add the values. We add "N" before the words to ensure Unicode encoding. In this case I decided not to add ID because we will be connecting the table by bike name and their ID numbers would be different from those in the main table.
+
+		CREATE TABLE Best_Bikes (
+		    product_color NCHAR(50),
+		    product_name NCHAR(100)
+		)
+		
+		INSERT INTO Best_Bikes (Product_Color, Product_Name)
+		VALUES
+		(N'Purple', N'DownhillDominator 8000'),
+		(N'Orange', N'AeroSpeed 1000'),
+		(N'Purple', N'DownhillDominator 7000'),
+		(N'Black', N'DownhillDominator 5000'),
+  (N'Blue', N'E-TrailBlazer 1000');![image](https://github.com/user-attachments/assets/8d6cdc4e-c3b8-4009-95b6-84a04cb7a7a6)
+
+Then, using LEFT JOIN, we can try to join records from the Main table and match them with values ​​from the Best_Bikes table using the product_name column. Then, using WHERE, we filter the result and leave only those rows for which product_name also exists in Best_Bikes.
+
+The next query performs the same function, but returns all product names, and in the column next to it, using the occurrence of the NULL value, determines whether a given product is in both tables. COALESCE is used to return the first value that is not = NULL. The CASE function used after ORDER BY is intended to assign the value 1,2 or 3 to each scenario so that the table can be arranged in a specific hierarchy. By default, SQL queries are assigned in ASC order (from smallest to largest), so values ​​1 = "yes" answers appear at the top and increase.
+
+[Table of Contents](#table-of-contents)
+  
+
+
 
