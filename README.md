@@ -4,7 +4,7 @@ in this work I present several dashboards in the Power Bi program and queries in
 
 Each dashboard is contained in a separate chapter, to which the appropriate directory is assigned. Of course, you can download the Power Bi file from there, the .xlsx file ready to open in Excel, the file in the .csv form to upload it to SQL and screenshots of the dashboard and search results in the MS SQL Server program.
 
-The "MS_SQL_Queries" is an MS SQL Server, file which contains all the queries I used in this project. You can download it and run it at your computer.
+The "MS_SQL_Queries" is an MS SQL Server file, which contains all the queries I used in this project. You can download it and run it at your computer.
 
 Below is a short table of contents with links to each chapter, and then there is my actual work - screenshots of dashboards, screenshots of SQL results and my explanations.
 
