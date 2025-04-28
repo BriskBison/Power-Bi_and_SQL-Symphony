@@ -13,6 +13,7 @@ Below is a short table of contents with links to each chapter, and then there is
 1. Chapter 1 - Dashboard, SQL (ALTER TABLE, SUM, COUNT, SUBQUERY, GROUP BY, HAVING)
 2. Chapter 2 - Dashboard, SQL (FORMAT, ROUND, AVG, OVER, RANK, PARTITION BY, WHERE)
 3. Chapter 3 - Dashboard (Decomposition tree, key influencers, Q&A, gauge), SQL (LEFT JOIN, OUTER JOIN, COALESCE, NOT NULL, CASE, WHEN)
+4. Chapter 4 - DAX(SUM, AVERAGE, CALCULATE, COUNTROWS, POWER, SQRT, DIVIDE)
 
 ---
 
@@ -21,6 +22,7 @@ Below is a short table of contents with links to each chapter, and then there is
 - [1. Chapter 1](#1-chapter-1)
 - [2. Chapter 2](#2-chapter-2)
 - [3. Chapter 3](#3-chapter-3)
+- [4. Chapter 4](#4-chapter-4)
 
 
 ## **Chapter 1**
@@ -114,8 +116,67 @@ Then, using LEFT JOIN, we can try to join records from the Main table and match 
 
 The next query performs the same function, but returns all product names and in the column next to it, using the occurrence of the NULL value, determines whether a given product is in both tables. COALESCE is used to return the first value that is not = NULL. The CASE function used after ORDER BY is intended to assign the value 1,2 or 3 to each scenario so that the table can be arranged in a specific hierarchy. By default, SQL queries are assigned in ASC order (from smallest to largest), so values ​​1 = "yes" answers appear at the top and increase.
 
+
 [Table of Contents](#table-of-contents)
-  
+## **4. Chapter 4**
+
+In this chapter I will present some DAX functions. To do this we select "modeling" -> "new measure" to create the measures we need.
+
+The first measure we will add is the sum
+
+	Total Sales = SUM(Sales[SalesAmount])
+
+ ![1](https://github.com/user-attachments/assets/d33d63e2-8ec7-450d-8120-fb1911328f40)
+
+ Then we add the average. It is important to select "new measure" again for this purpose.
+
+ 	Mean Sales = AVERAGE(Sales[SalesAmount])
+
+In the same way, we can calculate the average for a specific bike using the CALCULATE function.
+
+![2](https://github.com/user-attachments/assets/d6e2280d-f6f0-4803-a0d5-21b54a903c74)
+
+And also the standard deviation using the function below.
+
+	StdDev_SalesAmount = CALCULATE(SQRT(SUMX(Sales, (Sales[SalesAmount] - [Mean_SalesAmount]) ^ 2) / (COUNTROWS(Sales) - 1)), Products[ProductCategory] = "Touring Bikes")
+
+Standard deviation is used to measure the dispersion (variability) of data around the average value. The higher the standard deviation, the more dispersed the values ​​are in relation to the average.
+
+A very important indicator in data analysis is calculating standard deviations. In this example, I would like to calculate the correlation between total sales - SalesAmount and Region. Above, we have already calculated the average for SalesAmount, and thanks to this we could calculate the standard deviation.
+
+Now the same should be done with Region. However, this is a text variable, we need numerical data, so first we need to calculate the average sales from each region. This code will be useful for this:
+
+	Mean_SalesAmount_By_Region = AVERAGEX(VALUES(Regions[RegionName]),CALCULATE(AVERAGE(Sales[SalesAmount])))
+
+Then the standard deviation of this variable:
+
+	StdDev_SalesAmount_By_Region = SQRT(SUMX(VALUES(Regions[RegionName]),POWER(CALCULATE(AVERAGE(Sales[SalesAmount])) - [Mean_SalesAmount_By_Region],2)) / (COUNTROWS(VALUES(Regions[RegionName])) - 1))
+
+Now we need to calculate the covariance, we do this using this formula:
+
+	Covariance_SalesRegion = SUMX(Sales,(Sales[SalesAmount] - [Mean_SalesAmount]) * (RELATED(Regions[RegionName]) - [Mean_SalesAmount_By_Region]))/(COUNTROWS(Sales) - 1)
+
+Finally we can calculate the correlation.
+
+ 	Correlation_SalesAmount_Region = DIVIDE([Covariance_SalesRegion],[StdDev_SalesAmount] * [StdDev_SalesAmount_By_Region])
+
+![3](https://github.com/user-attachments/assets/8b0bdf17-f2a1-481c-9c5a-0dcca2c61184)
+
+As we could expect, the correlation is 1.00, which means that the connection between sales and region is really strong, which is also confirmed by the graph, where we can clearly see the advantage of North America over other regions.
+
+These calculations are about summing the deviations from the average, squaring them (POWER), dividing by the number of data (COUNTROWS), and safe division (DIVIDE).
+
+Additionally, we can always use the Quick Measure function, which will create a DAX formula for us, all we need to do is select the appropriate values.
+
+Now I present graphs comparing average average sales overall and average sales per region. And total sales with a breakdown by store and individual buyers and per region.
+
+![4](https://github.com/user-attachments/assets/c66591ec-2078-4c56-a29a-8f5b7ce4246b)
+
+
+[Table of Contents](#table-of-contents)
+
+
+
 
 
 
