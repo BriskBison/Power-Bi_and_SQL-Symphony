@@ -13,7 +13,7 @@ Below is a short table of contents with links to each chapter, and then there is
 1. Chapter 1 - Dashboard, SQL (ALTER TABLE, SUM, COUNT, SUBQUERY, GROUP BY, HAVING)
 2. Chapter 2 - Dashboard, SQL (FORMAT, ROUND, AVG, OVER, RANK, PARTITION BY, WHERE)
 3. Chapter 3 - Dashboard (Decomposition tree, key influencers, Q&A, gauge), SQL (LEFT JOIN, OUTER JOIN, COALESCE, NOT NULL, CASE, WHEN)
-4. Chapter 4 - DAX(SUM, AVERAGE, CALCULATE, COUNTROWS, POWER, SQRT, DIVIDE)
+4. Chapter 4 - DAX, Dashboard (SUM, AVERAGE, CALCULATE, COUNTROWS, POWER, SQRT, DIVIDE)
 
 ---
 
